@@ -1,12 +1,19 @@
 pipeline {
+
     agent any
+
+    environment {
+        projectPom = readMavenPom file: ''
+        version = "${projectPom}.version"
+    }
 
     stages {
 
         stage("compile") {
             steps {
                 echo 'compiling code'
-                withMaven( maven:'maven-3.6.3') {\
+                echo "pom version : ${version}"
+                withMaven( maven:'maven-3.6.3') {
                     bat 'mvn clean compile'
                 }
             }
@@ -15,7 +22,7 @@ pipeline {
         stage("test") {
             steps {
                 echo 'checking code quality'
-                withMaven( maven:'maven-3.6.3') {\
+                withMaven( maven:'maven-3.6.3') {
                     bat 'mvn test'
                 }
             }
@@ -33,8 +40,11 @@ pipeline {
         stage("deploy") {
             when{
                 expression {
-                    env.BRANCH_NAME == 'master'
+                    env.BRANCH_NAME == 'master' && !"${version}.contains('SNAPSHOT')"
                 }
+            }
+            input {
+                message "Should we continue?"
             }
             steps{
                 echo 'deploying application to production'
