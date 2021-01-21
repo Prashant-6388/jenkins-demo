@@ -2,16 +2,15 @@ package com.pc.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.security.InvalidParameterException;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(value = {InvalidParameterException.class })
-    public ResponseEntity<Object> handleInvalidInputException(InvalidParameterException ex) {
+    @ExceptionHandler(value = {MissingServletRequestParameterException.class })
+    public ResponseEntity<Object> handleInvalidInputException(MissingServletRequestParameterException ex) {
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
