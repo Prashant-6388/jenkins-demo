@@ -38,6 +38,10 @@ pipeline {
             }
             steps{
                 echo 'deploying application to production'
+                bat """
+                    call robocopy ${WORKSPACE}/target D:/deployable *.jar
+                    call if %errorlevel% neq 1 exit /b %errorlevel%
+                    """
             }
         }
 
