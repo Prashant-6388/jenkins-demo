@@ -16,7 +16,7 @@ pipeline {
             steps {
                 echo 'checking code quality'
                 withMaven( maven:'maven-3.6.3') {\
-                    sh 'mvn test'
+                    bat 'mvn test'
                 }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo 'staging for deployment'
                 withMaven( maven:'maven-3.6.3') {\
-                    sh 'mvn install'
+                    bat 'mvn install'
                 }
             }
         }
