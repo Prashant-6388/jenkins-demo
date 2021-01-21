@@ -16,18 +16,28 @@ pipeline {
             steps {
                 echo 'checking code quality'
                 withMaven( maven:'maven-3.6.3') {\
-                    sh 'mvn test'
+                    bat 'mvn test'
                 }
             }
         }
 
-
         stage("install") {
             steps {
                 echo 'staging for deployment'
-                withMaven( maven:'maven-3.6.3') {\
-                    sh 'mvn install'
+                withMaven( maven:'maven-3.6.3') {
+                    bat 'mvn install'
                 }
+            }
+        }
+
+        stage("deploy") {
+            when{
+                expression {
+                    env.BRANCH_NAME == 'master'
+                }
+            }
+            steps{
+                echo 'deploying application to production'
             }
         }
 
