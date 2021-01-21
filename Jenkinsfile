@@ -38,6 +38,7 @@ pipeline {
             }
             steps{
                 echo 'deploying application to production'
+                bat "cp ${WORKSPACE}/demo_master/target/*.jar D:/deployable"
             }
         }
 
