@@ -7,7 +7,7 @@ pipeline {
             steps {
                 echo 'compiling code'
                 withMaven( maven:'maven-3.6.3') {\
-                    sh 'mvn clean compile'
+                    bat 'mvn clean compile'
                 }
             }
         }
