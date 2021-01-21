@@ -14,16 +14,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WelcomeTest {
+class WelcomeTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void shouldReturnDefaultMessage() throws Exception {
+    void shouldReturnDefaultMessage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/welcome/prashant"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Welcome prashant !!!")));
+    }
+
+    @Test
+    void shouldReturnWelcomeMessage() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/welcome?name=Prashant"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Welcome Prashant !!!")));
+    }
+
+    @Test
+    void shouldReturnErrorMessage() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/welcome/"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }
